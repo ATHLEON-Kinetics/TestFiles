@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Match Timer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            transition: background-color 1s ease;
+            position: relative;
+        }
+        #athleon {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        #heading {
+            font-size: 2em;
+            margin-bottom: 20px;
+            display: none;
+        }
+        #startButton {
+            font-size: 2em;
+            padding: 20px 40px;
+            border-radius: 50%;
+            background-color: white;
+            color: black;
+            border: none;
+            cursor: pointer;
+        }
+        #timerContainer {
+            display: none;
+            position: relative;
+            width: 250px;
+            height: 250px;
+            margin-top: 20px;
+        }
+        svg {
+            transform: rotate(-90deg);
+            width: 100%;
+            height: 100%;
+        }
+        circle {
+            fill: none;
+            stroke-width: 10;
+            stroke-linecap: round;
+            transition: stroke 0.5s ease;
+        }
+        #progress {
+            stroke: white;
+            stroke-dasharray: 565.48; /* Circle perimeter */
+            stroke-dashoffset: 565.48;
+        }
+        #timerText {
+            position: absolute;
+            width: 100%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="athleon">ATHLEON</div>
+
+    <div id="heading">Welcome</div>
+
+    <button id="startButton">START</button>
+
+    <div id="timerContainer">
+        <svg viewBox="0 0 200 200">
+            <circle cx="100" cy="100" r="90" stroke="rgba(255, 255, 255, 0.2)"></circle>
+            <circle id="progress" cx="100" cy="100" r="90"></circle>
+        </svg>
+        <div id="timerText">15:00</div>
+    </div>
+
+    <script>
+        let preparationTime = 15 * 60; // 15 minutes
+        let matchTime = 60 * 60; // 1 hour
+        let totalTime = preparationTime;
+        let remainingTime = totalTime;
+        let interval;
+        let phase = "preparation"; // "preparation" -> "match"
+        const startButton = document.getElementById("startButton");
+        const heading = document.getElementById("heading");
+        const timerContainer = document.getElementById("timerContainer");
+        const timerText = document.getElementById("timerText");
+        const progressCircle = document.getElementById("progress");
+        const circlePerimeter = 565.48; // Circle perimeter
+
+        function startTimer() {
+            startButton.style.display = "none";
+            timerContainer.style.display = "block";
+            heading.style.display = "block";
+            heading.innerText = "Preparation Time";
+            document.body.style.backgroundColor = "blue"; // Preparation Time (Blue)
+            interval = setInterval(updateTimer, 1000);
+        }
+
+        function updateTimer() {
+            remainingTime--;
+
+            // Update timer text
+            const minutes = Math.floor(remainingTime / 60);
+            const seconds = remainingTime % 60;
+            timerText.innerText = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+            // Update circular progress
+            const progressPercentage = remainingTime / totalTime;
+            progressCircle.style.strokeDashoffset = circlePerimeter * (1 - progressPercentage);
+
+            // Color and Heading transitions
+            if (phase === "match") {
+                if (remainingTime <= 600 && remainingTime > 30) {
+                    document.body.style.backgroundColor = "orange"; // 10 minutes left
+                } else if (remainingTime <= 30) {
+                    document.body.style.backgroundColor = "red"; // 30 seconds left
+                    timerText.style.opacity = (remainingTime % 2 === 0) ? "1" : "0"; // Blinking effect
+                }
+            }
+
+            // Transition to Match Time
+            if (remainingTime === 0) {
+                if (phase === "preparation") {
+                    phase = "match";
+                    heading.innerText = "Match Time";
+                    totalTime = matchTime;
+                    remainingTime = totalTime;
+                    document.body.style.backgroundColor = "green"; // Match Time (Green)
+                } else {
+                    clearInterval(interval);
+                    timerText.innerText = "FINISHED";
+                    heading.innerText = "Finished";
+                }
+            }
+        }
+
+        startButton.addEventListener("click", startTimer);
+    </script>
+
+</body>
+</html>
