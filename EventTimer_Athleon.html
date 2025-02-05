@@ -25,28 +25,28 @@
         }
         #logo {
             position: absolute;
-            top: 15px;
-            left:20px;
-            width: 85px;
+            top: 13px;
+            left: 15px;
+            width: 80px;
             height: auto;
         }
         #athleon {
             position: absolute;
-            top: 19px;
+            top: 13px;
             right: 20px;
             font-size: 2em;
             font-weight: bold;
         }
         #athleon-sub {
             position: absolute;
-            top: 55px;
-            right: 26px;
+            top: 48px;
+            right: 24px;
             font-size: 0.7em;
             font-weight: lighter;
             color: gray;
         }
         #heading {
-            font-size: 2.5em;
+            font-size: 2.2em;
             font-weight: bold;
             margin-bottom: 20px;
             display: none;
@@ -59,7 +59,8 @@
             border: 2px solid white;
             padding: 15px;
             border-radius: 10px;
-            width: 450px;
+            width: 90%; /* Adjust width for mobile */
+            max-width: 450px;
         }
         .settings-row {
             display: flex;
@@ -67,10 +68,11 @@
             justify-content: space-between;
             width: 100%;
             margin: 8px 0;
+            flex-wrap: wrap; /* Ensures proper alignment on small screens */
         }
         .settings-label {
             font-size: 1em;
-            flex: 1.2;
+            flex: 1.5;
             text-align: right;
             margin-right: 10px;
             white-space: nowrap;
@@ -90,10 +92,10 @@
             border: 2px solid white;
         }
         #startButton {
-            font-size: 2em;
+            font-size: 1.5em;
             padding: 30px;
-            width: 140px;
-            height: 140px;
+            width: 130px;
+            height: 130px;
             border-radius: 50%;
             background-color: white;
             color: black;
@@ -108,7 +110,8 @@
         #timerContainer {
             display: none;
             position: relative;
-            width: 300px;
+            width: 80%; /* Adjust width for mobile */
+            max-width: 300px;
             height: 300px;
             margin-top: 20px;
         }
@@ -137,13 +140,49 @@
             font-size: 2.5em;
             font-weight: bold;
         }
+
+        /* 📱 Mobile Optimization */
+        @media (max-width: 600px) {
+            #logo {
+                width: 40px; /* Smaller logo on mobile */
+            }
+            #athleon {
+                font-size: 1.5em;
+            }
+            #athleon-sub {
+                font-size: 0.6em;
+                top: 40px;
+            }
+            #settings {
+                width: 95%; /* Full width on small screens */
+            }
+            .settings-label {
+                font-size: 0.9em;
+                flex: 1.2;
+            }
+            .settings-input, .color-input {
+                width: 90px;
+                height: 35px;
+                font-size: 1em;
+            }
+            #startButton {
+                width: 100px;
+                height: 100px;
+                font-size: 1.2em;
+            }
+            #timerContainer {
+                width: 90%;
+                max-width: 250px;
+            }
+            #heading {
+                font-size: 1.8em;
+            }
+        }
     </style>
 </head>
 <body>
 
-<img id="logo" src="https://raw.githubusercontent.com/ATHLEON-Kinetics/TestFiles/main/companylogo.jpg" alt="Logo" width="150" height="auto">
-
-
+    <img id="logo" src="https://raw.githubusercontent.com/ATHLEON-Kinetics/TestFiles/main/companylogo.jpg" alt="Logo"> <!-- LOGO IN TOP LEFT -->
 
     <div id="athleon">ATHLEON</div>
     <div id="athleon-sub">KINETIC SPORTS SYSTEM</div>
