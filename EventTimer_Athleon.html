@@ -25,14 +25,14 @@
         }
         #logo {
             position: absolute;
-            top: 13px;
-            left: 15px;
-            width: 80px;
+            top: 10px;
+            left: 20px;
+            width: 50px;
             height: auto;
         }
         #athleon {
             position: absolute;
-            top: 13px;
+            top: 10px;
             right: 20px;
             font-size: 2em;
             font-weight: bold;
@@ -40,7 +40,7 @@
         #athleon-sub {
             position: absolute;
             top: 48px;
-            right: 24px;
+            right: 22px;
             font-size: 0.7em;
             font-weight: lighter;
             color: gray;
@@ -59,7 +59,7 @@
             border: 2px solid white;
             padding: 15px;
             border-radius: 10px;
-            width: 90%; /* Adjust width for mobile */
+            width: 90%;
             max-width: 450px;
         }
         .settings-row {
@@ -68,7 +68,7 @@
             justify-content: space-between;
             width: 100%;
             margin: 8px 0;
-            flex-wrap: wrap; /* Ensures proper alignment on small screens */
+            flex-wrap: wrap;
         }
         .settings-label {
             font-size: 1em;
@@ -92,10 +92,10 @@
             border: 2px solid white;
         }
         #startButton {
-            font-size: 1.5em;
+            font-size: 2em;
             padding: 30px;
-            width: 130px;
-            height: 130px;
+            width: 140px;
+            height: 140px;
             border-radius: 50%;
             background-color: white;
             color: black;
@@ -106,11 +106,15 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            user-select: none;
+        }
+        #startButton:active {
+            background-color: lightgray;
         }
         #timerContainer {
             display: none;
             position: relative;
-            width: 80%; /* Adjust width for mobile */
+            width: 80%;
             max-width: 300px;
             height: 300px;
             margin-top: 20px;
@@ -139,44 +143,6 @@
             transform: translate(-50%, -50%);
             font-size: 2.5em;
             font-weight: bold;
-        }
-
-        /* 📱 Mobile Optimization */
-        @media (max-width: 600px) {
-            #logo {
-                width: 40px; /* Smaller logo on mobile */
-            }
-            #athleon {
-                font-size: 1.5em;
-            }
-            #athleon-sub {
-                font-size: 0.6em;
-                top: 40px;
-            }
-            #settings {
-                width: 95%; /* Full width on small screens */
-            }
-            .settings-label {
-                font-size: 0.9em;
-                flex: 1.2;
-            }
-            .settings-input, .color-input {
-                width: 90px;
-                height: 35px;
-                font-size: 1em;
-            }
-            #startButton {
-                width: 100px;
-                height: 100px;
-                font-size: 1.2em;
-            }
-            #timerContainer {
-                width: 90%;
-                max-width: 250px;
-            }
-            #heading {
-                font-size: 1.8em;
-            }
         }
     </style>
 </head>
@@ -224,6 +190,50 @@
         </svg>
         <div id="timerText">15:00</div>
     </div>
+
+    <script>
+        let totalTime, remainingTime, interval, phase = "preparation";
+
+        document.getElementById("startButton").addEventListener("click", function() {
+            let prepTime = parseInt(document.getElementById("prepTime").value) * 60;
+            let matchTime = parseInt(document.getElementById("matchTime").value) * 60;
+            let alertTime = parseInt(document.getElementById("alertTime").value) * 60;
+            let finalAlert = parseInt(document.getElementById("finalAlert").value);
+
+            let prepColor = document.getElementById("prepColor").value;
+            let matchColor = document.getElementById("matchColor").value;
+            let alertColor = document.getElementById("alertColor").value;
+            let finalColor = document.getElementById("finalColor").value;
+            
+            totalTime = prepTime;
+            remainingTime = totalTime;
+
+            document.getElementById("settings").style.display = "none";
+            document.getElementById("startButton").style.display = "none";
+            document.getElementById("timerContainer").style.display = "block";
+            document.getElementById("heading").style.display = "block";
+            document.getElementById("heading").innerText = "PREPARATION TIME";
+            document.body.style.backgroundColor = prepColor;
+
+            interval = setInterval(() => updateTimer(matchTime, alertTime, finalAlert, matchColor, alertColor, finalColor), 1000);
+        });
+
+        function updateTimer(matchTime, alertTime, finalAlert, matchColor, alertColor, finalColor) {
+            remainingTime--;
+
+            let minutes = Math.floor(remainingTime / 60);
+            let seconds = remainingTime % 60;
+            document.getElementById("timerText").innerText = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+            if (remainingTime === 0 && phase === "preparation") {
+                phase = "match";
+                totalTime = matchTime;
+                remainingTime = totalTime;
+                document.getElementById("heading").innerText = "MATCH TIME";
+                document.body.style.backgroundColor = matchColor;
+            }
+        }
+    </script>
 
 </body>
 </html>
